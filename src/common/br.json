@@ -1,0 +1,23 @@
+{
+    "screens": {
+        "home": {},
+        "profile": {
+            "version": "Versão"
+        },
+        "qrCode": {
+            "title": "QrCode",
+            "name": "Nome",
+            "code": "Código",
+            "id": "ID",
+            "serial": "Número de Série",
+            "dueDate": "Data de vencimento",
+            "digit": "Digite os dados do QrCode."
+        }
+    },
+    "buttons": {
+        "save": "Salvar",
+        "cancel": "Cancelar",
+        "new": "Nome",
+        "exportPDF": "Exporta PDF"
+    }
+}
