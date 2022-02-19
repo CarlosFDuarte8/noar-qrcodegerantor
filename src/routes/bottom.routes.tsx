@@ -1,10 +1,10 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { HeaderLeft, HeaderRight } from '../components';
-import Home from "../screens/Home";
-import Profile from "../screens/Profile";
-import QrCode from "../screens/QrCode";
+import { HeaderLeft, HeaderRight } from "../components";
+import HomeRoutes from "./home.routes";
+import Profile from "./profile.routes";
+import { QrCode, Menus } from "../screens";
 
 const Tab = createBottomTabNavigator();
 
@@ -13,28 +13,46 @@ function MyTabs() {
   const size = 32;
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="HomeRoutes"
       screenOptions={{
-        // style: {
-        //   borderTopColor: "transparent",
-        //   shadowColor: "#000",
-        //   backgroundColor: "#ccc",
-        //   shadowOffset: {
-        //     width: 0,
-        //     height: 5,
-        //   },
-        //   shadowRadius: 2,
-        //   shadowOpacity: 1.0,
-        //   elevation: 12,
-        // },
-        // showLabel: true,
-        
+        lazy: true,
+        tabBarActiveTintColor: "blue",
+        // tabBarInactiveBackgroundColor: 'red',
+        tabBarActiveBackgroundColor: colors,
+        tabBarStyle: {
+          // borderTopColor: "#000",
+          shadowColor: "#fff",
+          backgroundColor: "#fff",
+          shadowOffset: {
+            width: 0,
+            height: 1,
+          },
+          height: 60,
+          shadowRadius: 20,
+          shadowOpacity: 1.0,
+          elevation: 1,
+          showLabel: true,
+        },
+        unmountOnBlur: true,
+        // headerLeft: () => <HeaderLeft  back={false} />,
+        // headerRight: () => <HeaderRight  />,
       }}
+
       // lazy={false}
     >
       <Tab.Screen
+        name="Menu"
+        component={Menus}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="ios-menu-outline" size={size} color={color} />
+          ),
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
         name="Home"
-        component={Home}
+        component={HomeRoutes}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" size={size} color={color} />
@@ -67,6 +85,11 @@ function MyTabs() {
               color={color}
             />
           ),
+          tabBarBadge: 1,
+          tabBarBadgeStyle: {
+            color: "#000",
+            backgroundColor: "cyan",
+          },
           headerShown: false,
         }}
       />

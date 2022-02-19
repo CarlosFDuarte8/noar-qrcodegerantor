@@ -1,16 +1,87 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  FlatList,
+} from "react-native";
 import { Card, Divider } from "react-native-paper";
 import { useQrCode } from "../../../contexts";
 import { ImageQR } from "../../../components";
 
 export default function Gerator() {
+  const ref = React.useRef(null);
   const { qrCode, remove } = useQrCode();
   const [showModal, setShowModal] = React.useState(false);
 
   const [qrImage, setQrImage] = React.useState();
   const [qrName, setQrName] = React.useState();
+
+  const _renderItem = (item, key) => {
+    return (
+      <View style={styles.container}>
+        <Card>
+          <TouchableOpacity
+            onPress={() => {
+              setShowModal(true);
+              setQrImage(
+                item.customeCode + item.id + item.serialNumber + item.dueDate
+              );
+              setQrName(item.name);
+            }}
+          >
+            <View style={styles.flat} key={key}>
+              <View style={styles.flata}>
+                <Text style={styles.paragraph}>Nome: {item.name}</Text>
+                <Text style={styles.paragraph}>ID: {item.id}</Text>
+                <Text style={styles.paragraph}>Codigo: {item.customeCode}</Text>
+                <Text style={styles.paragraph}>
+                  Nº. série: {item.serialNumber}
+                </Text>
+                <Text style={styles.paragraph}>Vencimento: {item.dueDate}</Text>
+              </View>
+
+              <View style={styles.flats}>
+                <Image
+                  style={styles.logo}
+                  source={{
+                    uri:
+                      "https://chart.googleapis.com/chart?chs=160x160&cht=qr&chl=" +
+                      item.customeCode +
+                      item.id +
+                      item.serialNumber +
+                      item.dueDate,
+                  }}
+                />
+              </View>
+              <View style={{ flexDirection: "column", marginBottom: 10 }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log(" Excluir", item.id);
+                    remove(item.id);
+                  }}
+                >
+                  <Ionicons name="trash" size={25} color={"black"} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log(" Excluir", item.id);
+                    remove(item.id);
+                  }}
+                >
+                  <Ionicons name="md-pencil" size={25} color={"black"} />
+                </TouchableOpacity>
+              </View>
+            </View>
+            {/* <Divider /> */}
+          </TouchableOpacity>
+        </Card>
+      </View>
+    );
+  };
 
   return (
     <>
@@ -21,72 +92,15 @@ export default function Gerator() {
         serialNumber={qrImage}
         name={qrName}
       />
-      {qrCode.map((item, index) => {
-        return (
-          <View style={styles.container}>
-            <Card>
-              <TouchableOpacity
-                onPress={() => {
-                  setShowModal(true);
-                  setQrImage(
-                    item.customeCode+item.id+item.serialNumber+item.dueDate
-                  );
-                  setQrName(item.name)
-                }}
-              >
-                <View style={styles.flat} key={index}>
-                  <View style={styles.flata}>
-                    <Text style={styles.paragraph}>Nome: {item.name}</Text>
-                    <Text style={styles.paragraph}>ID: {item.id}</Text>
-                    <Text style={styles.paragraph}>
-                      Codigo: {item.customeCode}
-                    </Text>
-                    <Text style={styles.paragraph}>
-                      Nº. série: {item.serialNumber}
-                    </Text>
-                    <Text style={styles.paragraph}>
-                      Vencimento: {item.dueDate}
-                    </Text>
-                  </View>
-
-                  <View style={styles.flats}>
-                    <Image
-                      style={styles.logo}
-                      source={{
-                        uri:
-                          "https://chart.googleapis.com/chart?chs=160x160&cht=qr&chl=" +
-                          item.customeCode +
-                          item.id +
-                          item.serialNumber +
-                          item.dueDate,
-                      }}
-                    />
-                  </View>
-                  <View style={{flexDirection: 'column', marginBottom: 10}}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      console.log(" Excluir", item.id);
-                      remove(item.id);
-                    }}
-                  >
-                    <Ionicons name="trash" size={25} color={"black"} />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => {
-                      console.log(" Excluir", item.id);
-                      remove(item.id);
-                    }}
-                  >
-                    <Ionicons name="md-pencil" size={25} color={"black"} />
-                  </TouchableOpacity>
-                  </View>
-                </View>
-                {/* <Divider /> */}
-              </TouchableOpacity>
-            </Card>
-          </View>
-        );
-      })}
+      <FlatList
+        data={qrCode}
+        keyExtractor={(item, key) => `index-${key}`}
+        renderItem={({ item, key }) => _renderItem(item, key)}
+        ref={ref}
+        // refreshControl={
+        //   <RefreshControl refreshing={loading} onRefresh={start} />
+        // }
+      />
     </>
   );
 }

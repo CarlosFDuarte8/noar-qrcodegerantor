@@ -27,12 +27,12 @@ const QrCode = () => {
         <ButtonQrCode />
       </View>
       <ScrollView style={{ flex: 0.9 }}  
-      // refreshControl={
-          // <RefreshControl
-          //   refreshing={loading}
-          //   onRefresh={() => loadStoragedQrcodeData()}
-          // />
-        // }
+      refreshControl={
+          <RefreshControl
+            refreshing={loading}
+            onRefresh={() => loadStoragedQrcodeData()}
+          />
+        }
         >
         <Gerator />
       </ScrollView>

@@ -15,19 +15,19 @@ const App: React.FC = (props) => {
       <Stack.Screen
         name="BottomRoutes"
         component={BottomRoutes}
-        options={({ navigation }) => ({
-          title: "Home",
+        options={({navigation}) => ({
+          title: '',
           headerStyle: {
-            backgroundColor: "ccc",
+            backgroundColor: colors.primary,
             elevation: 0,
             shadowOpacity: 0,
             borderBottomWidth: 0,
           },
 
-          headerTintColor: "#fff",
+          headerTintColor: '#fff',
           headerShown: false,
           headerTransparent: false,
-          headerLeft: () => <HeaderLeft navigation={navigation} back={true} />,
+          headerLeft: () => <HeaderLeft navigation={navigation} back={false} />,
           headerRight: () => <HeaderRight navigation={navigation} />,
         })}
       />
@@ -44,9 +44,9 @@ const App: React.FC = (props) => {
           },
 
           headerTintColor: "#fff",
-          headerShown: true,
+          headerShown: false,
           headerTransparent: false,
-          headerLeft: () => <HeaderLeft navigation={navigation} back={true} />,
+          headerLeft: () => <HeaderLeft navigation={navigation} back={false} />,
           headerRight: () => <HeaderRight navigation={navigation} />,
         })}
       />
@@ -63,9 +63,9 @@ const App: React.FC = (props) => {
           },
 
           headerTintColor: "#fff",
-          headerShown: true,
+          headerShown: false,
           headerTransparent: false,
-          headerLeft: () => <HeaderLeft navigation={navigation} back={true} />,
+          headerLeft: () => <HeaderLeft navigation={navigation} back={false} />,
           headerRight: () => <HeaderRight navigation={navigation} />,
         })}
       />
@@ -82,9 +82,9 @@ const App: React.FC = (props) => {
           },
 
           headerTintColor: "#fff",
-          headerShown: true,
+          headerShown: false,
           headerTransparent: false,
-          headerLeft: () => <HeaderLeft navigation={navigation} back={true} />,
+          headerLeft: () => <HeaderLeft navigation={navigation} back={false} />,
           headerRight: () => <HeaderRight navigation={navigation} />,
         })}
       />
