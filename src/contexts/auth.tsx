@@ -14,15 +14,10 @@ interface AuthContextData {
   setFormLogin: any;
   loading: boolean;
   signIn(): Promise<void>;
-  signInPhone(): Promise<void>;
   signUp(): Promise<void>;
   signOut(): Promise<void>;
   loadUser(): Promise<void>;
-  sendPhone(to: string, msg: string, onNext: Function): Promise<void>;
-  checkCode(code: string): Promise<void>;
-  checkCodePDF(code: string): Promise<boolean>;
   recoverPassword(email: string): Promise<void>;
-  requestSamples(cart: any, orders?: string): Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -32,19 +27,11 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [formLogin, setFormLogin] = useState({});
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(true);
-  const [codeValidation, setCodeValidation] = useState("teste");
-  const [userValidation, setUserValidation] = useState("");
   const navigation = useNavigation();
 
   useEffect(() => {
     loadUser();
   }, []);
-
-  const date = new Date();
-  const formatted = `${date.getDate()}/${
-    date.getMonth() + 1
-  }/${date.getFullYear()}`;
-  const hora = `${date.getHours()}:${date.getMinutes()}`;
 
   async function loadStoragedData() {
     const userData = await api.get('/api/usuario/me');
@@ -152,26 +139,20 @@ export const AuthProvider: React.FC = ({ children }) => {
     loadStoragedData();
   }
 
-  //   async function recoverPassword(email: string) {
-  //     setLoading(true);
-  //     try {
-  //       let response = await api.post('/api/usuario/recuperar-senha', {email});
-  //       console.log(response.data);
-  //       Toast.show({
-  //         type: 'success',
-  //         text2: translate('screenApp.login.recoverPassword'),
-  //       });
-  //     } catch (e) {
-  //       if (e.response.status === 404) {
-  //         Toast.show({
-  //           type: 'error',
-  //           text2: translate('screenApp.validationPassword.email.invalid'),
-  //         });
-  //       }
-  //       console.error(e.message);
-  //     }
-  //     setLoading(false);
-  //   }
+    async function recoverPassword(email: string) {
+      setLoading(true);
+      try {
+        let response = await api.post('/api/usuario/recuperar-senha', {email});
+        console.log(response.data);
+        Toast.show({
+          type: 'success',
+          text2: 'Enviado',
+        });
+      } catch (e) {
+        console.error(e.message);
+      }
+      setLoading(false);
+    }
 
   return (
     <AuthContext.Provider
@@ -186,7 +167,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         loading,
         refreshing,
         setFormLogin,
-        // recoverPassword,
+        recoverPassword,
       }}
     >
       {children}
