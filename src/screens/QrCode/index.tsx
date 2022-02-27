@@ -13,30 +13,31 @@ import {
 import { Divider } from "native-base";
 import FastImage from "react-native-fast-image";
 import Gerator from "../../components/QRCode/Gerator";
-import { ButtonQrCode, CreateQR } from "../../components";
+import { ButtonQrCode, CreateQR, FabComponent } from "../../components";
 import { useQrCode } from "../../contexts";
 
 const QrCode = () => {
-  const {loading, loadStoragedQrcodeData} = useQrCode();
+  const { loading, loadStoragedQrcodeData, qrCode } = useQrCode();
   const [showModal, setShowModal] = React.useState(false);
+  console.log("QRCODE DATA: ", qrCode);
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <CreateQR isOpen={showModal} setShowModal={setShowModal} />
-      <View style={{ flex: 0.1 }}>
-        <ButtonQrCode />
-      </View>
-      <ScrollView style={{ flex: 0.9 }}  
-      refreshControl={
+      
+      <ScrollView
+        style={{ flex: 1 }}
+        refreshControl={
           <RefreshControl
             refreshing={loading}
             onRefresh={() => loadStoragedQrcodeData()}
           />
         }
-        >
-        <Gerator />
+      >
+        <Gerator qrCode={qrCode} />
+        <FabComponent onPlus={() => setShowModal(true)} />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

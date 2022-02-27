@@ -25,6 +25,7 @@ const QrCodeProvider: React.FC<Props> = ({ children }) => {
   const [qrCode, setQrCode] = useState([]);
 
   useEffect(() => {
+    
     // loadStoragedQrcodeData();
     //   console.log('qrCode: ', qrCode);
     const start = async () => {

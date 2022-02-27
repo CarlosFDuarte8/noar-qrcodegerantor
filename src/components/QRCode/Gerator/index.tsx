@@ -12,9 +12,13 @@ import { Card, Divider } from "react-native-paper";
 import { useQrCode } from "../../../contexts";
 import { ImageQR } from "../../../components";
 
-export default function Gerator() {
+type Props ={
+  qrCode: any;
+}
+
+export default function Gerator({qrCode}: Props) {
   const ref = React.useRef(null);
-  const { qrCode, remove } = useQrCode();
+  const {  remove } = useQrCode();
   const [showModal, setShowModal] = React.useState(false);
 
   const [qrImage, setQrImage] = React.useState();
@@ -35,7 +39,7 @@ export default function Gerator() {
           >
             <View style={styles.flat} key={key}>
               <View style={styles.flata}>
-                <Text style={styles.paragraph}>Nome: {item.name}</Text>
+                <Text style={styles.paragraph}>Nome: {qrCode.name}</Text>
                 <Text style={styles.paragraph}>ID: {item.id}</Text>
                 <Text style={styles.paragraph}>Codigo: {item.customeCode}</Text>
                 <Text style={styles.paragraph}>

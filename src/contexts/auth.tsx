@@ -35,12 +35,13 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   async function loadStoragedData() {
     const userData = await api.get('/api/usuario/me');
-    console.log("Dados do Usuario:", userData);
+    console.log("Dados do Usuario:", userData.data);
 
     const storagedToken = await AsyncStorage.getItem("@RNAuth:token");
+    await AsyncStorage.setItem("@RNApp:user", userData.data);
 
     if (storagedToken ) {
-    //   setUser(storagedUser);
+    //   setUser(userData.data);
       setLoading(false);
       //setToken(storagedToken);
     }
@@ -52,13 +53,13 @@ export const AuthProvider: React.FC = ({ children }) => {
     setLoading(true);
     try {
       setFormLogin(data);
-      console.log("Login feito", data);
+      // console.log("Login feito", data);
       Toast.show({
         type: "success",
         text2: "Login aceito",
       });
       const response = await api.post("/api/login", data);
-    //   console.log("Response", response);
+      // console.log("Response:", response);
 
       if (response.data.token) {
         await AsyncStorage.setItem("@RNAuth:token", response.data.token);
@@ -84,7 +85,6 @@ export const AuthProvider: React.FC = ({ children }) => {
       // console.log(JSON.stringify(data));
       const response = await api.post("/api/usuario", {
         ...data,
-        activationCode: codeValidation,
       });
       Alert.alert("Atenção", "Sucesso", [
         {
@@ -118,6 +118,8 @@ export const AuthProvider: React.FC = ({ children }) => {
 
     const userStorage = (await AsyncStorage.getItem("@RNApp:user")) || "[]";
     console.log("useS", storagedToken);
+        setUser(userStorage);
+
     return JSON.parse(storagedToken);
   }
 
@@ -128,7 +130,8 @@ export const AuthProvider: React.FC = ({ children }) => {
 
     try {
       if (storagedToken) {
-        setUser(storagedToken);
+        getUser();
+        // setUser(storagedToken);
       }
     } catch (e) {
       console.error(e.message);

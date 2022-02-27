@@ -2,8 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { HeaderLeft, HeaderRight } from "../components";
-import HomeRoutes from "./home.routes";
-import Profile from "./profile.routes";
+import {HomeRoutes, Profile, Others} from "./routes";
 import { QrCode, Menus } from "../screens";
 
 const Tab = createBottomTabNavigator();
@@ -13,7 +12,7 @@ function MyTabs() {
   const size = 32;
   return (
     <Tab.Navigator
-      initialRouteName="HomeRoutes"
+      initialRouteName="Home"
       screenOptions={{
         lazy: true,
         tabBarActiveTintColor: "blue",
@@ -62,7 +61,7 @@ function MyTabs() {
       />
       <Tab.Screen
         name="QrCode"
-        component={QrCode}
+        component={Others}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons

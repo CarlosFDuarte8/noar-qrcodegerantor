@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Box,
   Center,
@@ -8,12 +9,12 @@ import {
   Icon,
   Button,
 } from "native-base";
-import React, { useState } from "react";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import NetInfo from "@react-native-community/netinfo";
 
 import { useAuth } from "../../contexts";
+import { ScreenName } from "../../enums";
 
 const SingIn = () => {
   const navigation = useNavigation();
@@ -27,11 +28,19 @@ const SingIn = () => {
 
   async function onSubmit(data) {
     const netInfo = await NetInfo.fetch();
+    signIn(data, () => navigation.navigate("Home"));
     if (netInfo.isConnected) {
-      signIn(data, () => navigation.navigate("Home"));
     } else {
       alert("Erro!", "Dados invalidos");
     }
+  }
+
+  const f =  
+    "ForgotPassword";
+  
+
+  async function onSubmitF() {
+    navigation.navigate(f);
   }
 
   return (
@@ -105,7 +114,7 @@ const SingIn = () => {
             <Checkbox value="info" colorScheme="info" defaultIsChecked>
               Manter Logado
             </Checkbox>
-            <Button size="sm" variant="link">
+            <Button size="sm" variant="link" onPress={() => onSubmitF()}>
               Esqueceu a senha?
             </Button>
           </Stack>
